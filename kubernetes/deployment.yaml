@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fibapi
+spec:
+  selector:
+    matchLabels:
+      app: fibapi
+  template:
+    metadata:
+      labels:
+          app: fibapi
+    spec:
+      containers:
+      - name: fibapi
+        image: pixdale/fibapi:0.0.2
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fibapi
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: fibapi-lb
+  selector:
+    app: fibapi
